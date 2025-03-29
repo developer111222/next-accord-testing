@@ -1,0 +1,40 @@
+{
+  "name": "hero",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@tabler/icons-react": "^3.31.0",
+    "@tailwindcss/cli": "^4.0.14",
+    "axios": "^1.8.4",
+    "bcryptjs": "^3.0.2",
+    "clsx": "^2.1.1",
+    "jodit-react": "^5.2.18",
+    "jsonwebtoken": "^9.0.2",
+    "lightningcss": "^1.29.3",
+    "mongoose": "^8.13.0",
+    "motion": "^12.5.0",
+    "next": "15.2.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-icons": "^5.5.0",
+    "slugify": "^1.6.6",
+    "tailwind-merge": "^3.0.2"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4.0.14",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.2.3",
+    "tailwindcss": "^4.0.14",
+    "typescript": "^5"
+  }
+}

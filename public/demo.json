@@ -1,0 +1,33 @@
+[
+      {
+    "id": 5,
+    "name": "ZHFR Wires",
+    "description": "Accord Cables ZHFR cables and wires are composed of multi-draw pure copper conductors, making them environmentally benign. These cables are long-lasting because of the uniform resistance provided by the purity of copper. By itself, the value “ZHFR” indicates that the substance is halogen-free, flame-retardant, and has improved electrical and insulating qualities. Here, fire resistant qualities are added to polyethylene or Ethyl Vinyl Acetate (EVA) plastics that contain no halogen by mixing them with specific chemicals. When burned, this substance produces very little harmless smoke. Additionally, ZHFR compounds contain hydrated fillers that release water during a fire, preventing the flames from spreading. Accord Cables, a leading electric wire and cables manufacturer, proudly introduces its flagship product, ZHFR Wires. Engineered for optimal safety and performance, ZHFR (Zero Halogen Flame Retardant) wires represent a breakthrough in electrical wiring technology. These wires are meticulously crafted with a zero-halogen compound, ensuring minimal toxic gas emission during combustion, making them ideal for environments prioritizing human safety. The ZHFR Wires are equipped with flame-retardant additives, effectively curbing the risk of fire propagation and minimizing smoke and toxic fume release in the event of a fire. Their high thermal stability enables reliable performance under elevated temperatures, catering to diverse applications. Designed for durability, ZHFR wires resist wear and environmental factors, guaranteeing longevity in residential, commercial, and industrial settings. Accord Cables’ commitment to quality is evident through rigorous testing, compliance with industry standards, and certifications, solidifying ZHFR Wires as a trustworthy choice for efficient, safe, and enduring electrical installations.",
+    "productimage": "/img/zhfr-wire.png",
+    "bottomimg": "",
+    "slug": "ZHFR-wires"
+  },
+  {
+    "id": 1,
+    "name": "Co-Axial Cable",
+    "description": "ACCORD the market leader in power and control cables offer the widest range of cables and wires in the country. ACCORD co-axial cables for the cable tv network aare manufactured at its ultra modern plant. The stringent quality control measure coupled with companies R&D efforts ensure production of co-axial cables that are technologically superior.The central conductor is made of the solid electrical grade 99.97 pure copper to ensure better signal transmission. The conductor is insulated with nitrogen gas, which is superior and environment friendly as compared to chemical form. The doubles screen of special composite type bonded aluminum foil and special grade aluminum alloy branding of 60% coverage ensure low loss in signal quality, additional mechanical strength and existence to oxide formation in tropical weather conditions. The specially in-house formulated PVC compound used in jacketing is UV and abrasion resistant.ACCORD co-axial cables are fully tested for all parameters by computerized analyzer.",
+    "productimage": "/img/co-axial-cables.jpg",
+    "slug": "co-axial-cable"
+  },
+  {
+    "id": 6,
+    "name": "FR Wires",
+    "description": "Your defence against fire is provided by Accord Fire Retardant (FR) building wiring. Internationally recognised standards are followed in the production of Accord FR construction wires, which instill confidence in all user segments worldwide. For peace of mind, use Accord FR construction wires.  Ideal for wiring in any kind of home or commercial building where electrical and fire safety are critical concerns. Insulation: Flame-retardant PVC insulation with a special formulation is employed. Flame spread is slowed down by the FR characteristic without sacrificing safety.",
+    "productimage": "/img/fr-cable.jpg",
+    "bottomimg": "",
+    "slug": "FR-wires"
+  },
+  {
+    "id": 7,
+    "name": "FRLSH Wires",
+    "description": "The goal behind the introduction of Accord Fire Retardant Low Smoke (FRLSH)cables was to address these shortcomings. Pure copper conductors with severaldraws are used to make Accord FRLSH wires. These cables are long-lasting becauseof the uniform resistance provided by the purity of copper. In the compoundingstage, PVC compound is added along with additives to boost its fire resistanceand reduce its smoke emissions. While Accord FRLSH wires have an oxygen index of 30% and a smoke density of less than 40%, normal PVC compounds have an oxygenindex of 25%. This helps with firefighting and rescue efforts and providesbetter visibility for the evacuation of victims who are stuck. FRLSH PVCinsulated wire with a single core and several conventional copper conductors hasgood flame retardant, low smoke, and low halogen qualities.",
+    "productimage": "/img/frlsh-cable.png",
+    "bottomimg": "",
+    "slug": "FRLSH-wires"
+  }
+]

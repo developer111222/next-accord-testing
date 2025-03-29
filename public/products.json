@@ -1,0 +1,39 @@
+[
+   {
+    "id": 8,
+    "name": "House Wires",
+    "description": "",
+    "productimage": "/img/house-wire.png",
+    "slug": "house-wires"
+  },
+  {
+    "id": 2,
+    "name": "Multicore Flexible Cable",
+    "description": "Conductor: High purity electrolytic grade bright annealed flexible bunched bare copper conductor according to international standards like IS-8130, BS-6360, IEC-228, VDE-0295Insulation: Specially developed dieelectric grade PVC Compound.",
+    "productimage": "/img/multicore-wire.jpg",
+    "bottomimg": "/img/multicore-details.jpg",
+    "slug": "multicore-flexible-cable"
+  },
+
+
+  {
+    "id": 3,
+    "name": "Submersible Cable",
+    "description": "Accords Service wires are manufactured using bright annealed high-conductivity electrolytic aluminum conductors. These wires are designed for use in service entrances, which are the lines connecting the distribution line to a building’s electricity meter. We offer an extensive range of Aluminum Service Twin Flat Cable, catering to various needs with the following specifications. The general construction includes a range of 2.5 sq mm to 16.0 sq mm in aluminum. The conductor is made of highly tensile solid aluminum, adhering to Class 1/Class 2 specifications of IS: 8130/1984. The insulation is PVC Type A, as per IS: 5831/1984, with cores laid side by side. The outer sheath is made of PVC Type St1, following the IS: 8130/1984 standard.",
+    "productimage": "/img/submersible.png",
+    "bottomimg": "/img/submersible-details.jpg",
+    "slug": "submersible-cable"
+  },
+  {
+    "id": 4,
+    "name": "Service Wire",
+    "description": "Flexolite Special 3 Core Flat Cable are designed for critical space requirements and provide excellent protection against water immersion, rain, and the ingress of small solid foreign bodies. These cable are made from high-quality, pure annealed electrolytic copper, ensuring superior flexibility and uniform resistance. The conductors are insulated with a special grade PVC on advanced co-extrusion lines, while the outer sheath is crafted from a highly abrasion-resistant PVC compound that is resistant to grease, oil, and water, ensuring a long-lasting and reliable product. With exceptional flexibility, durability, and all-weather protection, these cable are suitable for various pump types and available in different sizes, offering a safe and efficient solution for demanding applications.",
+    "productimage": "/img/service-wire.jpg",
+    "bottomimg": "/img/service-wire-details.jpg",
+    "slug": "service-wire"
+  }
+  
+
+ 
+]
+
