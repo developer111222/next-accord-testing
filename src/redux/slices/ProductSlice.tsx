@@ -47,11 +47,10 @@ export const createProduct = createAsyncThunk<Product, { title: string; content:
         },
       });
  console.log(response.data)
-//  return {
-//     ...response.data, // Spread the actual product data
-//     message: response.data.message, // Add the response message
-//   };
-return response.data
+ return {
+  ...response.data, // Spread the product data
+  message: response.data.response, // Include the success message from the server
+};
      
     } catch (error: any) {
       // Check if the error has a response object (for API errors)
@@ -97,17 +96,18 @@ const ProductSlice = createSlice({
         state.loading = true;
       })
       // Handle fulfilled state (when the async action succeeds)
-      .addCase(createProduct.fulfilled, (state, action: PayloadAction<Product>) => {
+      .addCase(createProduct.fulfilled, (state, action: PayloadAction<Product & { message: string }>) => {
         state.loading = false;
         state.success = true;
         if (Array.isArray(state.products)) {
-            state.products.push(action.payload); // Append to products array
-          } else {
-            state.products = [action.payload]; // Initialize products if not an array
-          } // Ensure immutability by spreading the old array
-        state.message = action.payload.message;
+          state.products.push(action.payload); // Append to products array
+        } else {
+          state.products = [action.payload]; // Initialize products if not an array
+        }
+        state.message = action.payload.message; // Now 'message' exists in the payload
         state.error = null;
       })
+      
       // Handle rejected state (when the async action fails)
       .addCase(createProduct.rejected, (state, action) => {
         state.loading = false;
