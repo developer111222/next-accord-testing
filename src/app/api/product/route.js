@@ -34,7 +34,7 @@ export async function POST(req) {
                 slug
             });
             await product.save();
-            return NextResponse.json({success: true, response: "Product created successfully"})
+            return NextResponse.json({success: true, message: "Product created successfully"})
         
     }
     catch (error){

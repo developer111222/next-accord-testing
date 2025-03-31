@@ -47,11 +47,12 @@ export const createProduct = createAsyncThunk<Product, { title: string; content:
         },
       });
  console.log(response.data)
- return {
-    ...response.data, // Spread the actual product data
-    response: response.data.response, // Add the response message
-  };
-      return response.data; // Return the created product
+//  return {
+//     ...response.data, // Spread the actual product data
+//     message: response.data.message, // Add the response message
+//   };
+return response.data
+     
     } catch (error: any) {
       // Check if the error has a response object (for API errors)
       const errorMessage = error?.response?.data?.message || 'Error creating product';
@@ -104,7 +105,7 @@ const ProductSlice = createSlice({
           } else {
             state.products = [action.payload]; // Initialize products if not an array
           } // Ensure immutability by spreading the old array
-        state.message = action.payload.response;
+        state.message = action.payload.message;
         state.error = null;
       })
       // Handle rejected state (when the async action fails)
@@ -123,7 +124,7 @@ const ProductSlice = createSlice({
         state.loading = false;
         state.products = action.payload; // Replace the entire product array with the new data
         state.error = null;
-        state.message = 'Products fetched successfully';
+        state.message = null;
         state.success = true;
       })
       .addCase(getProducts.rejected, (state, action) => {
