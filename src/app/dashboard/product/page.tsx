@@ -1,42 +1,48 @@
 "use client"
 import { useState, FormEvent, useEffect } from 'react';
-import { createProduct ,getProducts} from '@/redux/slices/ProductSlice';
+import { createProduct} from '@/redux/slices/ProductSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
+import Editor from '../../../utils/JodEditor';
 
 export default function Product() {
-  const dispatch = useDispatch();
-  const { loading, error, message, success,products } = useSelector(
+  const dispatch: AppDispatch = useDispatch(); // Correct typing for dispatch
+  const { loading, error, message, success, products } = useSelector(
     (state: RootState) => state.product
   );
 
-  const [title, setTitle] = useState<string>('');
-  const [content, setContent] = useState<string>('');
-  const [image, setImage] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string | null>(null);
+  // Use one useState for all form fields (title, content, image, preview)
+  const [formData, setFormData] = useState({
+    title: '',
+    content: '',
+    image: null as File | null,
+    preview: null as string | null,
+  });
 
-console.log(products,"route products")
+
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setImage(file);
-      setPreview(URL.createObjectURL(file)); // Preview the uploaded image
+      setFormData((prevData) => ({
+        ...prevData,
+        image: file,
+        preview: URL.createObjectURL(file), // Preview the uploaded image
+      }));
     }
   };
-  useEffect(()=>{
 
-    dispatch(getProducts())
-  },[dispatch])
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!title || !content || !image) {
+
+    // Check if all fields are filled
+    if (!formData.title || !formData.content || !formData.image) {
       alert('All fields are required');
       return;
     }
 
-    dispatch(createProduct({ title, content, image }));
+    dispatch(createProduct(formData));
   };
 
   return (
@@ -50,8 +56,13 @@ console.log(products,"route products")
           <input
             type="text"
             id="title"
-            value={title}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
+            value={formData.title}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setFormData((prevData) => ({
+                ...prevData,
+                title: e.target.value,
+              }))
+            }
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2"
             placeholder="Enter title"
             required
@@ -63,15 +74,7 @@ console.log(products,"route products")
           <label htmlFor="content" className="block text-sm font-medium text-gray-700">
             Content
           </label>
-          <input
-            type="text"
-            id="content"
-            value={content}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setContent(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2"
-            placeholder="Enter content"
-            required
-          />
+          <Editor formData={formData} setFormData={setFormData} />
         </div>
 
         {/* Image Upload */}
@@ -81,9 +84,9 @@ console.log(products,"route products")
           </label>
           <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
             <div className="space-y-1 text-center">
-              {preview ? (
+              {formData.preview ? (
                 <img
-                  src={preview}
+                  src={formData.preview}
                   alt="Preview"
                   className="mx-auto h-32 w-32 object-cover rounded-md"
                 />
@@ -135,50 +138,8 @@ console.log(products,"route products")
           </button>
         </div>
       </form>
-      <h2>Product List</h2>
-      <ul>
-  {Array.isArray(products) && products.length > 0 ? (
-    <table className="min-w-full bg-white border border-gray-200">
-      <thead>
-        <tr className="border-b">
-          <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Title</th>
-          <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Image</th>
-          <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Content</th>
-          <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {products.map((product) => (
-          <tr key={product._id || product.slug || Math.random().toString(36).substr(2, 9)} className="border-b">
-            <td className="px-4 py-2 text-sm text-gray-700">{product.title}</td>
-            <td className="px-4 py-2 text-sm text-gray-700">
-              <img src={`/uploads/${product.image}`} alt={product.title} style={{ width: '100px' }} />
-            </td>
-            <td className="px-4 py-2 text-sm text-gray-700">{product.content}</td>
-            <td className="px-4 py-2 text-sm text-gray-700">
-              <button
-                // onClick={() => handleEdit(product)}
-                className="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-700 mr-2"
-              >
-                Edit
-              </button>
-              <button
-                // onClick={() => handleDelete(product._id)}
-                className="px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-700"
-              >
-                Delete
-              </button>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  ) : (
-    <p className="text-center">No products available.</p>
-  )}
-</ul>
 
-
+     
     </div>
   );
 }
