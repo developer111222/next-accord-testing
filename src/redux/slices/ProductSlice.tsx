@@ -46,8 +46,11 @@ export const createProduct = createAsyncThunk<Product, { title: string; content:
           'Content-Type': 'multipart/form-data', // Make sure to send the correct content type
         },
       });
-
-
+ console.log(response.data)
+ return {
+    ...response.data, // Spread the actual product data
+    response: response.data.response, // Add the response message
+  };
       return response.data; // Return the created product
     } catch (error: any) {
       // Check if the error has a response object (for API errors)
