@@ -4,10 +4,11 @@ import { createProduct} from '@/redux/slices/ProductSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 import Editor from '../../../utils/JodEditor';
+import { useAppDispatch,useAppSelector } from '@/redux/hooks';
 
 export default function Product() {
-  const dispatch: AppDispatch = useDispatch(); // Correct typing for dispatch
-  const { loading, error, message, success, products } = useSelector(
+  const dispatch = useAppDispatch()
+  const { loading, error, message, success, products } = useAppSelector(
     (state: RootState) => state.product
   );
 

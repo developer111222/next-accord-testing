@@ -3,12 +3,15 @@ import React, { useEffect, useState } from 'react';
 import { getProducts } from '@/redux/slices/ProductSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../../../redux/store';
+import { useAppDispatch,useAppSelector } from '@/redux/hooks';
+
 
 const Page = () => {
-  const dispatch: AppDispatch = useDispatch(); // Correct typing for dispatch
-  const { loading, error, message, success, products } = useSelector(
-    (state: RootState) => state.product
-  );
+    const dispatch = useAppDispatch()
+    const { loading, error, message, success, products } = useAppSelector(
+      (state: RootState) => state.product
+    );
+  
 
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
@@ -18,13 +21,16 @@ const Page = () => {
     dispatch(getProducts()); // Dispatching the async action
   }, [dispatch]);
 
+  // Safely handle the case where `products` might be undefined
+  const productsList = Array.isArray(products) ? products : [];
+
   // Calculate total pages
-  const totalPages = Math.ceil(products.length / productsPerPage);
+  const totalPages = Math.ceil(productsList.length / productsPerPage);
 
   // Slice products for current page
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+  const currentProducts = productsList.slice(indexOfFirstProduct, indexOfLastProduct);
 
   // Handle page change
   const handlePageChange = (page: number) => {
@@ -84,7 +90,7 @@ const Page = () => {
       </ul>
 
       {/* Pagination controls */}
-      {products.length >= 8 && (
+      {productsList.length >= 8 && (
         <div className="flex justify-center mt-4">
           <button
             onClick={() => handlePageChange(currentPage - 1)}
