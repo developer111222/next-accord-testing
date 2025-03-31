@@ -125,7 +125,7 @@ const ProductSlice = createSlice({
         state.loading = false;
         state.products = action.payload; // Replace the entire product array with the new data
         state.error = null;
-        state.message = null;
+    
         state.success = true;
       })
       .addCase(getProducts.rejected, (state, action) => {

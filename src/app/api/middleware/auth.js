@@ -1,63 +1,47 @@
 import jwt from "jsonwebtoken";
 import User from "@/model/userschema";
 
-// export function authenticate(req) {
-//     const authHeader = req.headers.get("authorization");
-//     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-//         return { status: 401, msg: "Unauthorized" };
-//     }
-
-//     const token = authHeader.split(" ")[1];
-//     try {
-//         const decoded = jwt.verify(token, "sdkufhdskjgdkjghdfkjgfdhkgjffjkdghdfgjkfdl");
-//         const user = await User.findById({ decoded.id })
-//         if (!user) {
-//             return res.status(401).json({ message: "User not found" });
-//         }
-//         req.user = user; // Attach the entire user object to the request
-
-
-//         next();
-
-//         return { status: 200, user: decoded };
-//     } catch (error) {
-//         return { status: 403, msg: "Forbidden" };
-//     }
-// }
-
+// Function to authenticate user by verifying the JWT token
 export async function authenticate(req) {
     try {
         // ✅ Get cookies from the request headers
-        const cookieHeader = req.headers.get("cookie"); 
-        if (!cookieHeader) return null;
+        const cookieHeader = req.headers.get("cookie");
+        if (!cookieHeader) return { status: 401, msg: "Unauthorized: No cookies found" };
 
         // ✅ Parse cookies (Extract `token`)
         const cookies = Object.fromEntries(cookieHeader.split("; ").map(c => c.split("=")));
-        const token = cookies.token; 
+        const token = cookies.token;
 
-        if (!token) return null;
+        if (!token) return { status: 401, msg: "Unauthorized: Token not found" };
 
         // ✅ Verify and Decode JWT Token
         const decoded = jwt.verify(token, "sdkufhdskjgdkjghdfkjgfdhkgjffjkdghdfgjkfdl");
 
         // ✅ Fetch User from Database
         const user = await User.findById(decoded.id).select("username email role");
-        if (!user) return null;
+        if (!user) return { status: 401, msg: "Unauthorized: User not found" };
 
-        return user; // ✅ Return User Object
+        return { status: 200, user }; // ✅ Return user object
     } catch (error) {
         console.error("Authentication Error:", error);
-        return null;
+        return { status: 403, msg: "Forbidden: Invalid token" }; // Return forbidden if token verification fails
     }
 }
 
+// Function to authorize user based on their role
 export function authorize(requiredRole) {
-    return (req) => {
-        const auth = authenticate(req);
-        if (auth.status !== 200) return auth;
-        if (auth.user.role !== requiredRole) {
-            return { status: 403, msg: "Access Denied" };
+    return async (req) => {
+        const auth = await authenticate(req);  // We need to wait for the result from `authenticate`
+        
+        if (auth.status !== 200) {
+            return { status: auth.status, msg: auth.msg }; // If authentication fails, return the error
         }
-        return auth;
+
+        // Check if user has the required role
+        if (auth.user.role !== requiredRole) {
+            return { status: 403, msg: "Access Denied: Insufficient role" };
+        }
+
+        return { status: 200, user: auth.user }; // Authorized user, proceed with request
     };
 }

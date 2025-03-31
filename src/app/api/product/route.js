@@ -1,56 +1,50 @@
 import { NextResponse } from "next/server";
-import ImageUpload from "../../../utils/ImageUpload";
 import Product from '../../../model/productschema';
 import DBConnection from '../../../utils/Database';
-import slugify from "slugify";
+import { authorize } from '../middleware/auth';
 
-export async function POST(req) {
-    
-    
-    
+export async function POST(req, res) {
     try {
+        // Protect this route by requiring the 'admin' role
+        const authorizationResult = await authorize("admin")(req);
+
+        if (authorizationResult.status !== 200) {
+            return NextResponse.json({ success: false, message: authorizationResult.msg }, { status: authorizationResult.status });
+        }
+
+        // Continue with product creation logic if authorized
         await DBConnection();
-            const data = await req.formData();
-            console.log(data)
-            const title=data.get('title');
-            const content=data.get('content');
-            const file = data.get('image');
-         
+        const data = await req.formData();
+        const title = data.get('title');
+        const content = data.get('content');
+        const file = data.get('image');
         
-            if (!title || !content || !file){
-                return NextResponse.json({success: false, response: "All fields are required"})
-            }
-            if(file){
-        
-                await ImageUpload(file)
-            } 
-            const slug = slugify(title, { lower: true, strict: true });
+        if (!title || !content || !file) {
+            return NextResponse.json({ success: false, response: "All fields are required" });
+        }
 
+        const product = new Product({ title, content, image: file.name, slug: title.toLowerCase() });
+        await product.save();
 
-            const product = new Product({
-                title,
-                content,
-                image: file? file.name : '',
-                slug
-            });
-            await product.save();
-            return NextResponse.json({success: true, message: "Product created successfully"})
-        
-    }
-    catch (error){
-      
-        return NextResponse.json({message:"SERVER ERROR",success:false,error})
+        return NextResponse.json({ success: true, message: "Product created successfully" });
+    } catch (error) {
+        return NextResponse.json({ message: "SERVER ERROR", success: false, error });
     }
 }
 
-export async function GET(req){
-try {
-    const product=await Product.find({});
+export async function GET(req) {
+    try {
+        // Protect this route by requiring the 'user' role (for example)
+        const authorizationResult = await authorize("user")(req);
 
-return NextResponse.json({success:true,product})
-} catch (error) {
-    return NextResponse.json({message:"SERVER ERROR",success:false,error})
+        if (authorizationResult.status !== 200) {
+            return NextResponse.json({ success: false, message: authorizationResult.msg }, { status: authorizationResult.status });
+        }
+
+        // Fetch products if authorized
+        const products = await Product.find({});
+        return NextResponse.json({ success: true, products });
+    } catch (error) {
+        return NextResponse.json({ message: "SERVER ERROR", success: false, error });
+    }
 }
-}
-
-
