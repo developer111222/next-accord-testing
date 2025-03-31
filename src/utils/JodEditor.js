@@ -1,5 +1,8 @@
 import React, { useMemo, useRef } from 'react';
-import JoditEditor from 'jodit-react';
+import dynamic from 'next/dynamic';
+
+// Dynamically import JoditEditor, disabling SSR (server-side rendering)
+const JoditEditor = dynamic(() => import('jodit-react'), { ssr: false });
 
 const Editor = ({ formData, setFormData }) => {
   const editor = useRef(null);

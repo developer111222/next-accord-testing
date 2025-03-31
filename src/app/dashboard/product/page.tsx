@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 import Editor from '../../../utils/JodEditor';
 import { useAppDispatch,useAppSelector } from '@/redux/hooks';
+import Loader from '../../../utils/Loader';
 
 export default function Product() {
   const dispatch = useAppDispatch()
@@ -33,6 +34,23 @@ export default function Product() {
     }
   };
 
+  useEffect(()=>{
+    if(success){
+      alert(message);
+      setFormData({
+        title: '',
+        content: '',
+        image: null,
+        preview: null,
+      });
+    }
+    if(error){
+      alert(error);
+    }
+    if(loading){
+      <Loader />
+    }
+  },[error,success,loading])
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

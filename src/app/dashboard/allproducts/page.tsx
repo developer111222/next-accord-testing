@@ -12,6 +12,7 @@ const Page = () => {
       (state: RootState) => state.product
     );
   
+    console.log(products)
 
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);

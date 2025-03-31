@@ -47,6 +47,7 @@ export const createProduct = createAsyncThunk<Product, { title: string; content:
         },
       });
 
+
       return response.data; // Return the created product
     } catch (error: any) {
       // Check if the error has a response object (for API errors)
@@ -100,7 +101,7 @@ const ProductSlice = createSlice({
           } else {
             state.products = [action.payload]; // Initialize products if not an array
           } // Ensure immutability by spreading the old array
-        state.message = action.payload.message;
+        state.message = action.payload.response;
         state.error = null;
       })
       // Handle rejected state (when the async action fails)
