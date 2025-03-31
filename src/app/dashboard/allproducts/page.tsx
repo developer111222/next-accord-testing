@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react';
-import { createProduct, getProducts } from '@/redux/slices/ProductSlice';
+import { getProducts } from '@/redux/slices/ProductSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../../../redux/store';
 
