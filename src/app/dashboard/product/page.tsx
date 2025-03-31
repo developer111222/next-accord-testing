@@ -1,27 +1,46 @@
 "use client"
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
+import { createProduct ,getProducts} from '@/redux/slices/ProductSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../redux/store';
 
 export default function Product() {
+  const dispatch = useDispatch();
+  const { loading, error, message, success,products } = useSelector(
+    (state: RootState) => state.product
+  );
+
   const [title, setTitle] = useState<string>('');
+  const [content, setContent] = useState<string>('');
   const [image, setImage] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+
+console.log(products,"route products")
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setImage(file);
-      setPreview(URL.createObjectURL(file));
+      setPreview(URL.createObjectURL(file)); // Preview the uploaded image
     }
   };
+  useEffect(()=>{
+
+    dispatch(getProducts())
+  },[dispatch])
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log('Form submitted:', { title, image });
+    if (!title || !content || !image) {
+      alert('All fields are required');
+      return;
+    }
+
+    dispatch(createProduct({ title, content, image }));
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-xl">
+    <div className="max-w-7xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-xl">
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Title Field */}
         <div>
@@ -35,6 +54,22 @@ export default function Product() {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2"
             placeholder="Enter title"
+            required
+          />
+        </div>
+
+        {/* Content Field */}
+        <div>
+          <label htmlFor="content" className="block text-sm font-medium text-gray-700">
+            Content
+          </label>
+          <input
+            type="text"
+            id="content"
+            value={content}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setContent(e.target.value)}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2"
+            placeholder="Enter content"
             required
           />
         </div>
@@ -100,6 +135,50 @@ export default function Product() {
           </button>
         </div>
       </form>
+      <h2>Product List</h2>
+      <ul>
+  {Array.isArray(products) && products.length > 0 ? (
+    <table className="min-w-full bg-white border border-gray-200">
+      <thead>
+        <tr className="border-b">
+          <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Title</th>
+          <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Image</th>
+          <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Content</th>
+          <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {products.map((product) => (
+          <tr key={product._id || product.slug || Math.random().toString(36).substr(2, 9)} className="border-b">
+            <td className="px-4 py-2 text-sm text-gray-700">{product.title}</td>
+            <td className="px-4 py-2 text-sm text-gray-700">
+              <img src={`/uploads/${product.image}`} alt={product.title} style={{ width: '100px' }} />
+            </td>
+            <td className="px-4 py-2 text-sm text-gray-700">{product.content}</td>
+            <td className="px-4 py-2 text-sm text-gray-700">
+              <button
+                // onClick={() => handleEdit(product)}
+                className="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-700 mr-2"
+              >
+                Edit
+              </button>
+              <button
+                // onClick={() => handleDelete(product._id)}
+                className="px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-700"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : (
+    <p className="text-center">No products available.</p>
+  )}
+</ul>
+
+
     </div>
   );
 }

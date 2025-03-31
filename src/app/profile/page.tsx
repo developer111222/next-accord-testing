@@ -14,6 +14,7 @@ const Page: React.FC = () => {
   const [user, setUser] = useState<UserProfile | null>(null);
   const router = useRouter();
 
+
   useEffect(() => {
     fetchUserProfile();
   }, []);
