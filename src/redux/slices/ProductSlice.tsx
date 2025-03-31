@@ -30,7 +30,8 @@ const initialState: ProductState = {
 
 // Create the reducer for the products slice
 
-export const createProduct = createAsyncThunk<Product, { title: string; content: string; image: File | null }>(
+export const createProduct =createAsyncThunk<
+Product & { message: string }, { title: string; content: string; image: File | null }>(
   'product/createProduct',
   async ({ title, content, image }) => {
     if (!image) throw new Error('Image is required');
