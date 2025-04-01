@@ -34,23 +34,23 @@ export default function Product() {
     }
   };
 
-  useEffect(()=>{
-    if(success){
-      alert(message);
-      setFormData({
-        title: '',
-        content: '',
-        image: null,
-        preview: null,
-      });
-    }
-    if(error){
-      alert(error);
-    }
-    if(loading){
-      <Loader />
-    }
-  },[error,success,loading])
+  // useEffect(()=>{
+  //   if(success){
+  //     alert(message);
+  //     setFormData({
+  //       title: '',
+  //       content: '',
+  //       image: null,
+  //       preview: null,
+  //     });
+  //   }
+  //   if(error){
+  //     alert(error);
+  //   }
+  //   if(loading){
+  //     <Loader />
+  //   }
+  // },[error,success,loading])
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -67,7 +67,9 @@ export default function Product() {
   return (
     <div className="max-w-7xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-xl">
       <form onSubmit={handleSubmit} className="space-y-6">
+        <div className='flex justify-between gap-30'>
         {/* Title Field */}
+        <div className='flex-1'>
         <div>
           <label htmlFor="title" className="block text-sm font-medium text-gray-700">
             Title
@@ -89,12 +91,7 @@ export default function Product() {
         </div>
 
         {/* Content Field */}
-        <div>
-          <label htmlFor="content" className="block text-sm font-medium text-gray-700">
-            Content
-          </label>
-          <Editor formData={formData} setFormData={setFormData} />
-        </div>
+     
 
         {/* Image Upload */}
         <div>
@@ -146,15 +143,25 @@ export default function Product() {
             </div>
           </div>
         </div>
-
-        {/* Submit Button */}
-        <div>
+        <div className='my-10'>
           <button
             type="submit"
             className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
             Submit
           </button>
+        </div>
+        </div>
+        <div className='flex-1'>
+        {/* Submit Button */}
+       
+        <div>
+          <label htmlFor="content" className="block text-sm font-medium text-gray-700">
+            Content
+          </label>
+          <Editor formData={formData} setFormData={setFormData} />
+        </div>
+        </div>
         </div>
       </form>
 

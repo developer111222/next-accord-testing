@@ -7,8 +7,9 @@ const  DBConnection = async () => {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
                 bufferCommands: false,
-                serverSelectionTimeoutMS: 50000,
+                serverSelectionTimeoutMS: 100000,
                 socketTimeoutMS: 45000,
+                connectTimeoutMS: 30000
              
             }
         );

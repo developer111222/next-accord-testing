@@ -57,7 +57,7 @@ export async function loginUser(body) {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "Strict",
-            maxAge: 24 * 60 * 60,
+            maxAge: 24 * 60 * 60 * 1000,
             path: "/",
         });
 
@@ -82,7 +82,7 @@ export async function logout() {
 
 export async function getProfile(user) {
   try {
-    console.log(user,"user")
+    
       return Response.json(user); // ✅ Return the user directly
   } catch (error) {
       console.error(error);

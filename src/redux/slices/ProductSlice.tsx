@@ -68,7 +68,8 @@ export const getProducts = createAsyncThunk<Product[]>(
   async () => {
     try {
       const response = await axios.get('/api/product');
-      return response.data.product;
+    console.log(response.data)  
+      return response.data.products;
     } catch (error: any) {
       const errorMessage = error?.response?.data?.message || 'Error fetching products';
       throw new Error(errorMessage); // Throw the error with the actual message from the server

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import Product from '../../../model/productschema';
 import DBConnection from '../../../utils/Database';
 import { authorize } from '../middleware/auth';
+import ImageUpload from '../../../utils/ImageUpload'
 
 export async function POST(req, res) {
     try {
@@ -19,10 +20,13 @@ export async function POST(req, res) {
         const content = data.get('content');
         const file = data.get('image');
         
+        
         if (!title || !content || !file) {
             return NextResponse.json({ success: false, response: "All fields are required" });
         }
-
+        
+        await ImageUpload(file)
+        
         const product = new Product({ title, content, image: file.name, slug: title.toLowerCase() });
         await product.save();
 
@@ -34,17 +38,16 @@ export async function POST(req, res) {
 
 export async function GET(req) {
     try {
-        // Protect this route by requiring the 'user' role (for example)
-        const authorizationResult = await authorize("user")(req);
-
-        if (authorizationResult.status !== 200) {
-            return NextResponse.json({ success: false, message: authorizationResult.msg }, { status: authorizationResult.status });
-        }
-
-        // Fetch products if authorized
-        const products = await Product.find({});
+      
+        await DBConnection();
+        const products = await Product.find();
         return NextResponse.json({ success: true, products });
     } catch (error) {
+        console.log(error)
         return NextResponse.json({ message: "SERVER ERROR", success: false, error });
     }
 }
+
+
+
+
