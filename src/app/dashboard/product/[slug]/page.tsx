@@ -7,7 +7,7 @@ import { getSingleProduct } from '@/redux/slices/ProductSlice';
 
 const Page = () => {
   const pathname = usePathname();
-  const slug = pathname?.split('/').pop(); // Extract slug from URL path
+  const slug = pathname?.split('/').pop(); // Extract slug from the pathname
 
   const dispatch = useAppDispatch();
 
@@ -15,14 +15,15 @@ const Page = () => {
     (state: RootState) => state.product
   );
 
-  // Dispatch the action to fetch a single product when the slug changes
+  // Dispatch the action to fetch a single product when the slug is available
   useEffect(() => {
- 
-      dispatch(getSingleProduct({slug})); 
-   
+    if (slug) {
+      // Check if the slug exists and is a valid string
+      dispatch(getSingleProduct({ slug }));
+    }
   }, [slug, dispatch]); // Dependency on `slug` to re-fetch whenever the slug changes
 
-
+  console.log(singleProduct);
 
   return (
     <div>
