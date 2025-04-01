@@ -4,10 +4,13 @@ import { getProducts } from '@/redux/slices/ProductSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../../../redux/store';
 import { useAppDispatch,useAppSelector } from '@/redux/hooks';
+import { redirect } from 'next/navigation'
+// import { useRouter } from 'next/router';
 
 
 const Page = () => {
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
+    // const router = useRouter();
     const { loading, error, message, success, products } = useAppSelector(
       (state: RootState) => state.product
     );
@@ -36,6 +39,15 @@ const Page = () => {
   // Handle page change
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
+  };
+
+
+
+  //----------handle edit------
+
+  const handleEdit = (slug: string) => {
+    console.log(slug)
+    redirect(`/dashboard/product/${slug}`);
   };
 
   return (
@@ -69,7 +81,7 @@ const Page = () => {
                   <td className="px-4 py-2 text-sm text-gray-700">{product.slug}</td>
                   <td className="px-4 py-2 text-sm text-gray-700">
                     <button
-                      // onClick={() => handleEdit(product)}
+                      onClick={() => handleEdit(product.slug)}
                       className="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-700 mr-2"
                     >
                       Edit

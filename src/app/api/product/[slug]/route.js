@@ -9,7 +9,7 @@ import DBConnection from '../../../../utils/Database';
 export const GET = async (req, {params}) => {
     try {
         const { slug } = await params;
-      
+ 
         // const {slug}=params;
 await DBConnection()
         const product =await Product.findOne({slug});
@@ -68,7 +68,7 @@ export const PATCH = async (req, { params }) => {
   //---------------------------delete blog buy id------------
 
   export const DELETE = async (req, { params }) => {
-    try {
+    try { 
       const { slug } = await params;
   
       const authorizationResult = await authorize("admin")(req);

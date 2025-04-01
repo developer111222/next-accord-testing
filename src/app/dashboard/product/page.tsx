@@ -34,23 +34,23 @@ export default function Product() {
     }
   };
 
-  // useEffect(()=>{
-  //   if(success){
-  //     alert(message);
-  //     setFormData({
-  //       title: '',
-  //       content: '',
-  //       image: null,
-  //       preview: null,
-  //     });
-  //   }
-  //   if(error){
-  //     alert(error);
-  //   }
-  //   if(loading){
-  //     <Loader />
-  //   }
-  // },[error,success,loading])
+  useEffect(()=>{
+    if(success){
+      alert(message);
+      setFormData({
+        title: '',
+        content: '',
+        image: null,
+        preview: null,
+      });
+    }
+    if(error){
+      alert(error);
+    }
+    if(loading){
+      <Loader />
+    }
+  },[error,success,loading])
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
