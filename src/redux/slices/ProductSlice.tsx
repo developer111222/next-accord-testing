@@ -74,7 +74,7 @@ export const getProducts = createAsyncThunk<Product[]>(
   async () => {
     try {
       const response = await axios.get('/api/product');
-      console.log(response.data);
+   
       return response.data.products;
     } catch (error: any) {
       const errorMessage = error?.response?.data?.message || 'Error fetching products';
@@ -98,6 +98,24 @@ export const getSingleProduct = createAsyncThunk<Product, { slug: string }>(
     }
   }
 );
+
+//------------------ delete product by id--------------
+
+export const deleteProduct=createAsyncThunk<Product & {message:string},{slug:string}>(
+  'product/deleteProduct',
+  async ({ slug }) => {  
+    try {
+    const response=  await axios.delete(`/api/product/${slug}`);
+    return {
+      ...response.data, // Spread the product data
+      message: response.data.response, // Include the success message from the server
+    };
+    } catch (error: any) {
+      const errorMessage = error?.response?.data?.message || 'Error deleting product';
+      throw new Error(errorMessage);
+    }
+  }
+)
 
 // Create a slice of the Redux store for products
 const ProductSlice = createSlice({
@@ -167,7 +185,32 @@ const ProductSlice = createSlice({
         state.singleProduct = null; // Reset singleProduct on error
         state.message = null;
         state.success = false;
-      });
+      })
+
+      //-----deletye product
+
+      .addCase(deleteProduct.pending,(state)=>{
+        state.loading=true;
+      
+      })
+
+      .addCase(deleteProduct.fulfilled,(state,action:PayloadAction<Product & { message: string }>)=>{
+
+        state.loading=false;
+        state.isdelete=true;
+     
+        state.error=null;
+  
+        state.message=action.payload.message;
+      })
+
+      .addCase(deleteProduct.rejected,(state,action)=>{
+        state.loading=false;
+        state.isdelete=false;
+        state.error=action.error.message || 'Failed to delete product';
+        state.message=null;
+        state.success=false;
+      })
   },
 });
 

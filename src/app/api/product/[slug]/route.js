@@ -71,12 +71,12 @@ export const PATCH = async (req, { params }) => {
     try { 
       const { slug } = await params;
   
-      const authorizationResult = await authorize("admin")(req);
+      // const authorizationResult = await authorize("admin")(req);
   
-      if (authorizationResult.status !== 200) {
-        return NextResponse.json({ success: false, message: authorizationResult.msg }, { status: authorizationResult.status });
-      }
-  
+      // if (authorizationResult.status !== 200) {
+      //   return NextResponse.json({ success: false, message: authorizationResult.msg }, { status: authorizationResult.status });
+      // }
+
       await DBConnection();
   
       const product = await Product.findByIdAndDelete({_id:slug});

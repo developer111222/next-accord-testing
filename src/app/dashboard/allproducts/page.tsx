@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react';
-import { getProducts } from '@/redux/slices/ProductSlice';
+import { getProducts,deleteProduct } from '@/redux/slices/ProductSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../../../redux/store';
 import { useAppDispatch,useAppSelector } from '@/redux/hooks';
@@ -46,9 +46,16 @@ const Page = () => {
   //----------handle edit------
 
   const handleEdit = (slug: string) => {
-    console.log(slug)
+  
     redirect(`/dashboard/product/${slug}`);
   };
+
+const handleDelete=(slug:string)=>{
+ 
+if(slug){
+  dispatch(deleteProduct({slug}))
+}
+}
 
   return (
     <div>
@@ -87,7 +94,7 @@ const Page = () => {
                       Edit
                     </button>
                     <button
-                      // onClick={() => handleDelete(product._id)}
+                      onClick={() => handleDelete(product._id)}
                       className="px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-700"
                     >
                       Delete

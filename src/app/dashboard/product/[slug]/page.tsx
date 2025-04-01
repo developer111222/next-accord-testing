@@ -23,7 +23,7 @@ const Page = () => {
     }
   }, [slug, dispatch]); // Dependency on `slug` to re-fetch whenever the slug changes
 
-  console.log(singleProduct);
+
 
   return (
     <div>
