@@ -38,7 +38,7 @@ const initialState: ProductState = {
 
 // Create Product
 export const createProduct = createAsyncThunk<
-  Product & { message: string }, 
+  Product & { message: string },
   { title: string; content: string; image: File | null }
 >(
   'product/createProduct',
@@ -74,7 +74,7 @@ export const getProducts = createAsyncThunk<Product[]>(
   async () => {
     try {
       const response = await axios.get('/api/product');
-   
+
       return response.data.products;
     } catch (error: any) {
       const errorMessage = error?.response?.data?.message || 'Error fetching products';
@@ -90,8 +90,8 @@ export const getSingleProduct = createAsyncThunk<Product, { slug: string }>(
 
     try {
       const response = await axios.get(`/api/product/${slug}`);
-      
-      return response.data.product      ;
+
+      return response.data.product;
     } catch (error: any) {
       const errorMessage = error?.response?.data?.message || 'Error fetching product';
       throw new Error(errorMessage);
@@ -101,21 +101,53 @@ export const getSingleProduct = createAsyncThunk<Product, { slug: string }>(
 
 //------------------ delete product by id--------------
 
-export const deleteProduct=createAsyncThunk<Product & {message:string},{slug:string}>(
+export const deleteProduct = createAsyncThunk<Product & { message: string }, { slug: string }>(
   'product/deleteProduct',
-  async ({ slug }) => {  
+  async ({ slug }) => {
     try {
-    const response=  await axios.delete(`/api/product/${slug}`);
-    return {
-      ...response.data, // Spread the product data
-      message: response.data.response, // Include the success message from the server
-    };
+      const response = await axios.delete(`/api/product/${slug}`);
+      return {
+        ...response.data, // Spread the product data
+        message: response.data.response, // Include the success message from the server
+      };
     } catch (error: any) {
       const errorMessage = error?.response?.data?.message || 'Error deleting product';
       throw new Error(errorMessage);
     }
   }
 )
+
+//------------------------patch by id------------------
+
+export const updateProduct = createAsyncThunk<Product & { message: string }, { slug: string, title: string, content: string, image: File,id:string}>('product/updateProduct',
+  async ({ title, content, image,id }) => {
+    console.log(id,title,content,image)
+    // if (!image) throw new Error('Image is required');
+
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('content', content);
+    formData.append('image', image); // Add the file as part of the FormData
+    
+    try {
+      const response = await axios.patch(`/api/product/${id}`,formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // Ensure to send the correct content type
+        },
+      });
+      console.log(response.data);
+      return {
+        ...response.data, // Spread the product data
+        message: response.data.message, // Include the success message from the server
+      };
+    } catch (error: any) {
+      const errorMessage = error?.response?.data?.message || 'Error creating product';
+      throw new Error(errorMessage); // Throw the error with the actual message from the server
+    }
+  }
+);
+
+
 
 // Create a slice of the Redux store for products
 const ProductSlice = createSlice({
@@ -144,14 +176,14 @@ const ProductSlice = createSlice({
         state.loading = false;
         state.success = true;
         state.products.push(action.payload);  // Append to products array
-        state.message = action.payload.message; // Now 'message' exists in the payload
-        state.error = null;
+        state.message = action.payload.message || "created successfully"; // Now 'message' exists in the payload
+
       })
       .addCase(createProduct.rejected, (state, action) => {
         state.loading = false;
         state.success = false;
         state.error = action.error.message || 'Error creating product';
-        state.message = null;
+
       })
       // Handle getProducts
       .addCase(getProducts.pending, (state) => {
@@ -167,7 +199,7 @@ const ProductSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || 'Failed to fetch products'; // Use error message from API response
         state.products = [];
-        state.message = null;
+        // state.message = null;
         state.success = false;
       })
       // Handle getSingleProduct
@@ -183,34 +215,57 @@ const ProductSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || 'Failed to fetch product'; // Use error message from API response
         state.singleProduct = null; // Reset singleProduct on error
-        state.message = null;
+        // state.message = null;
         state.success = false;
       })
 
       //-----deletye product
 
-      .addCase(deleteProduct.pending,(state)=>{
-        state.loading=true;
+      .addCase(deleteProduct.pending, (state) => {
+        state.loading = true;
+
+      })
+
+      .addCase(deleteProduct.fulfilled, (state, action: PayloadAction<Product & { message: string }>) => {
+
+        state.loading = false;
+        state.isdelete = true;
+
+
+
+        state.message = action.payload.message;
+      })
+
+      .addCase(deleteProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.isdelete = false;
+        state.error = action.error.message || 'Failed to delete product';
+        state.message = null;
+        state.success = false;
+      })
+
+      //-----update product
+
+      .addCase(updateProduct.pending, (state) => {
+        state.loading = true;
+      })
+
+      .addCase(updateProduct.fulfilled, (state, action: PayloadAction<Product & { message: string }>) => {
+        state.loading = false;
+        state.isupdate = true;
+        state.error = null;
+        state.message = action.payload.message || 'updated succesfully';
+      })
+
+      .addCase(updateProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.isupdate = false;
+        state.error = action.error.message || 'Failed to update product';
+        // state.message = action.message"updated succesfully";
+        state.success = false;
+      })
+
       
-      })
-
-      .addCase(deleteProduct.fulfilled,(state,action:PayloadAction<Product & { message: string }>)=>{
-
-        state.loading=false;
-        state.isdelete=true;
-     
-        state.error=null;
-  
-        state.message=action.payload.message;
-      })
-
-      .addCase(deleteProduct.rejected,(state,action)=>{
-        state.loading=false;
-        state.isdelete=false;
-        state.error=action.error.message || 'Failed to delete product';
-        state.message=null;
-        state.success=false;
-      })
   },
 });
 

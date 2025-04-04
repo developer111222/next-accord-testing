@@ -24,6 +24,8 @@ await DBConnection()
     }
 }
 
+//--------------------------update blog--------------------
+
 export const PATCH = async (req, { params }) => {
     try {
       const { slug } = await params;
@@ -57,7 +59,7 @@ export const PATCH = async (req, { params }) => {
         return NextResponse.json({ success: false, message: "Product not found" });
       }
   
-      return NextResponse.json({ success: true, product });
+      return NextResponse.json({ success: true, product,message:"update successfully" });
     } catch (error) {
       console.log(error);
       return NextResponse.json({ message: "server error" });

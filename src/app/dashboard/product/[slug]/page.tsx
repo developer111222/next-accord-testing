@@ -3,33 +3,47 @@ import React, { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { RootState, AppDispatch } from '../../../../redux/store';
 import { useAppDispatch, useAppSelector } from '../../../../redux/hooks';
-import { getSingleProduct } from '@/redux/slices/ProductSlice';
+import { getSingleProduct,updateProduct,resetState } from '@/redux/slices/ProductSlice';
 import Loader from '@/utils/Loader';
 import Editor from '@/utils/JodEditor';
+import { useRouter } from "next/navigation";
+
 
 const Page = () => {
   const pathname = usePathname();
   const slug = pathname?.split('/').pop(); // Extract slug from the pathname
 
   const dispatch = useAppDispatch();
+  const router = useRouter(); 
 
-  const { loading, error, message, success, singleProduct } = useAppSelector(
+  const { loading, error, message, success,isupdate, singleProduct } = useAppSelector(
     (state: RootState) => state.product
   );
+
 
   const [formData, setFormData] = useState({
     title: "",
     content: "",
     image: null as File | null,
-    preview: null as string | null,
-    fetchpreview:null as string | null
+    preview: null as string | null, // This will hold the preview image URL
+    id:''
   });
 
   useEffect(() => {
     if (slug) {
       dispatch(getSingleProduct({ slug }));
+      dispatch(resetState())
     }
-  }, [slug, dispatch]);
+if(error){
+  alert(error);
+  dispatch(resetState())
+}
+if(isupdate){
+  alert(message)
+  dispatch(resetState())
+router.push('/dashboard/allproducts')
+}
+  }, [slug, dispatch,error,isupdate]);
 
   useEffect(() => {
     if (singleProduct) {
@@ -37,7 +51,8 @@ const Page = () => {
         title: singleProduct.title,
         content: singleProduct.content,
         image: null, // We'll use the image preview
-        fetchpreview: singleProduct.image || null, // Assuming product image is a URL
+        preview: singleProduct.image || null, // Assuming product image is a URL
+        id: singleProduct._id, // Assuming product ID is in the response
       });
     }
   }, [singleProduct]);
@@ -56,18 +71,14 @@ const Page = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Check if all fields are filled
-    if (!formData.title || !formData.content || !formData.image) {
-      alert("All fields are required");
-      return;
-    }
 
-    // Handle submission logic to update the product (this might be an API call)
-    // Assuming you will save the image and product data
+dispatch(updateProduct(formData))
+  
   };
 
   return (
     <div className="max-w-7xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-xl">
+        {loading && <Loader />}
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="flex justify-between gap-30">
           {/* Title Field */}
@@ -98,19 +109,19 @@ const Page = () => {
               </label>
               <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
                 <div className="space-y-1 text-center">
-                  {formData.preview ? (
+                  {formData.image===null ? (
                     <img
-                      src={formData.preview} // Correctly point to the preview URL
+                    src={`/uploads/${formData.preview}`} // Correctly point to the preview URL
                       alt="Preview"
                       className="mx-auto h-32 w-32 object-cover rounded-md"
                     />
                   ) : (
-
-                    <img src={`/uploads/${formData.fetchpreview}`}
-                  alt="Preview"
+                    
+                    <img
+                    src={formData.preview || "/uploads/avtar.jpg"}  // If no preview, use the fetched product image
+                      alt="Preview"
                       className="mx-auto h-32 w-32 object-cover rounded-md"
-                 />
-                   
+                    />
                   )}
                   <div className="flex text-sm text-gray-600">
                     <label
@@ -133,20 +144,6 @@ const Page = () => {
                 </div>
               </div>
             </div>
-          
-          </div>
-
-          <div className="flex-1">
-            {/* Image Upload */}
-
-            <div>
-              <label htmlFor="content" className="block text-sm font-medium text-gray-700">
-                Content
-              </label>
-              <Editor formData={formData} setFormData={setFormData} />
-            </div>
-          
-
             <div className="my-10">
               <button
                 type="submit"
@@ -156,11 +153,22 @@ const Page = () => {
               </button>
             </div>
           </div>
+
+          <div className="flex-1">
+            {/* Content Field */}
+            <div>
+              <label htmlFor="content" className="block text-sm font-medium text-gray-700">
+                Content
+              </label>
+              <Editor formData={formData} setFormData={setFormData} />
+            </div>
+
+           
+          </div>
         </div>
       </form>
     </div>
   );
 };
-
 
 export default Page;

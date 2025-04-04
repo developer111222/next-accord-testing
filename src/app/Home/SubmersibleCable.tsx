@@ -10,8 +10,8 @@ const SubmersibleCable = () => {
       Excellent all weather protection</p>
 
     <video className="w-full h-full" autoPlay loop muted>
-        <source src="/video.webm" type="video/webm" />
-        <source src="/video.mp4" type="video/mp4" />
+        <source src="/submersible.webm" type="video/webm" />
+        <source src="/submersible.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
 

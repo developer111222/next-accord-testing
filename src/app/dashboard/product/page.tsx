@@ -1,6 +1,6 @@
 "use client"
 import { useState, FormEvent, useEffect } from 'react';
-import { createProduct} from '@/redux/slices/ProductSlice';
+import { createProduct,resetState} from '@/redux/slices/ProductSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 import Editor from '../../../utils/JodEditor';
@@ -43,9 +43,11 @@ export default function Product() {
         image: null,
         preview: null,
       });
+      dispatch(resetState());
     }
     if(error){
       alert(error);
+      dispatch(resetState());
     }
     if(loading){
       <Loader />

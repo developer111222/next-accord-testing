@@ -38,17 +38,12 @@ export default function Page() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="col-span-1 md:col-span-2">
           {loading && <Loader />}
+          {loading && <p className='text-white'>spinner</p>}
           {error && <p>Error: {error}</p>}
           {singleProduct && (
             <div>
               <h2 className="text-xl text-white font-semibold mb-4">{singleProduct.title}</h2>
-              {/* <Image
-                src={`/uploads/${singleProduct.image}`}
-                alt={singleProduct.title}
-                width={1000}
-                height={1000}
-                className="w-full h-64 object-cover rounded-lg mb-6"
-              /> */}
+         
               <Image
                 src={`/uploads/${singleProduct.image}`}
                 alt={singleProduct.title}
