@@ -25,9 +25,10 @@ const Page = () => {
     title: "",
     content: "",
     image: null as File | null,
-    preview: null as string | null, // This will hold the preview image URL
-    id:''
+    preview: null as string | null,
+    id: ''
   });
+  
 
   useEffect(() => {
     if (slug) {
@@ -50,12 +51,13 @@ router.push('/dashboard/allproducts')
       setFormData({
         title: singleProduct.title,
         content: singleProduct.content,
-        image: null, // We'll use the image preview
-        preview: singleProduct.image || null, // Assuming product image is a URL
-        id: singleProduct._id, // Assuming product ID is in the response
+        image: null, // Keep as null or file type depending on your requirements
+        preview: singleProduct.image || null, // Correct key here
+        id: singleProduct._id // Assuming product ID is part of the response
       });
     }
   }, [singleProduct]);
+  
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
