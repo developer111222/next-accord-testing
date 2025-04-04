@@ -8,6 +8,7 @@ import { RootState, AppDispatch } from '../../redux/store';
 import { useAppDispatch,useAppSelector } from '@/redux/hooks';
 import { redirect } from 'next/navigation'
 import { getProducts } from '@/redux/slices/ProductSlice';
+import Loader from '@/utils/Loader';
 
 
 
@@ -34,6 +35,8 @@ export default function Page() {
         <TextHoverEffect text="OUR PRODUCTS" />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {loading && <Loader />}
+      {error && <p>Error: {error}</p>}
         {products.map((product) => (
           <div
             key={product.slug} // TypeScript now knows 'slug' exists
