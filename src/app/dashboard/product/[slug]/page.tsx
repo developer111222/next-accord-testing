@@ -30,13 +30,7 @@ const Page = () => {
   );
 
 
-  // const [formData, setFormData] = useState({
-  //   title: "",
-  //   content: "",
-  //   image: null as File | null,
-  //   preview: null as string | null, // This will hold the preview image URL
-  //   id:''
-  // });
+
 
   const [formData, setFormData] = useState<FormData>({
     title: "",
@@ -64,17 +58,7 @@ router.push('/dashboard/allproducts')
 }
   }, [slug, dispatch,error,isupdate]);
 
-  // useEffect(() => {
-  //   if (singleProduct) {
-  //     setFormData({
-  //       title: singleProduct.title,
-  //       content: singleProduct.content,
-  //       image: null, // We'll use the image preview
-  //       preview: singleProduct.image || null, // Assuming product image is a URL
-  //       id: singleProduct._id, // Assuming product ID is in the response
-  //     });
-  //   }
-  // }, [singleProduct]);
+
 
   useEffect(() => {
     if (singleProduct) {
@@ -104,8 +88,14 @@ router.push('/dashboard/allproducts')
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-
-dispatch(updateProduct(formData))
+    const payload = {
+      slug: formData.slug,
+      title: formData.title,
+      content: formData.content,
+      image: formData.image as File, // make sure it's a File
+      id: formData.id,
+    };
+dispatch(updateProduct(payload))
   
   };
 
