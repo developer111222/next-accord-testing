@@ -31,11 +31,11 @@ export default function Page() {
 
   return (
     <div className="min-h-screen bg-black text-white py-8 px-4 sm:px-6 lg:px-8">
+      {loading && <Loader />}
+      {error && <p>Error: {error}</p>}
       <div className="h-[15rem] flex items-center justify-center">
         <TextHoverEffect text="OUR PRODUCTS" />
       </div>
-      {loading && <Loader />}
-      {error && <p>Error: {error}</p>}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {products.map((product) => (
           <div

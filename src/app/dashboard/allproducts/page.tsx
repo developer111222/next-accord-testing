@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../../../redux/store';
 import { useAppDispatch,useAppSelector } from '@/redux/hooks';
 import { redirect } from 'next/navigation'
+import Loader from '@/utils/Loader';
 // import { useRouter } from 'next/router';
 
 
@@ -60,6 +61,8 @@ if(slug){
   return (
     <div>
       <h2>Product List</h2>
+      {loading && <Loader />}
+      {error && <p>Error: {error}</p>}
       <ul>
         {Array.isArray(currentProducts) && currentProducts.length > 0 ? (
           <table className="min-w-full bg-white border border-gray-200">
