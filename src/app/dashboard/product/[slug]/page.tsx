@@ -22,7 +22,7 @@ const Page = () => {
     content: "",
     image: null as File | null,
     preview: null as string | null,
-    fetchpreview:null
+    fetchpreview:null as string | null
   });
 
   useEffect(() => {
