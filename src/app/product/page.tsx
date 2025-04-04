@@ -4,33 +4,29 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { TextHoverEffect } from '@/component/TextHoverEffect';
 import Image from 'next/image';
+import { RootState, AppDispatch } from '../../redux/store';
+import { useAppDispatch,useAppSelector } from '@/redux/hooks';
+import { redirect } from 'next/navigation'
+import { getProducts } from '@/redux/slices/ProductSlice';
 
-// Define the Product type based on your expected data structure
-interface Product {
-  slug: string;
-  name: string;
-  description: string;
-  productimage: string;
-}
+
 
 export default function Page() {
-  // Provide the Product[] type to useState
-  const [products, setProducts] = useState<Product[]>([]);
+  const dispatch = useAppDispatch();
+  // const router = useRouter();
+  const { loading, error, message, success, products } = useAppSelector(
+    (state: RootState) => state.product
+  );
+
+  function stripHtmlTags(input: string) {
+    return input.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' '); 
+  }
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetch('/products.json');
-        if (!res.ok) throw new Error('Failed to fetch products');
-        const data: Product[] = await res.json();
-        console.log(data);
-        setProducts(data);
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      }
-    };
-    fetchData();
-  }, []);
+    dispatch(getProducts()); // Dispatching the async action
+  }, [dispatch]);
+
+  
 
   return (
     <div className="min-h-screen bg-black text-white py-8 px-4 sm:px-6 lg:px-8">
@@ -44,17 +40,25 @@ export default function Page() {
             className="card bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300"
           >
             <Image
-              src={product.productimage}
-              alt={product.name}
+              src={`/uploads/${product.image}`}
+              alt={product.title}
               width={500}
               height={500}
               className="w-full h-64 object-cover rounded-lg mb-6"
             />
             <div className="p-4">
-              <h2 className="text-xl text-white font-semibold mb-2">{product.name}</h2>
+              <h2 className="text-xl text-white font-semibold mb-2">{product.title}</h2>  
+              {/* <p className="text-gray-400 mb-4" dangerouslySetInnerHTML={{ __html: product.content.substring(0, 100) }} /> */}
+
               <p className="text-gray-400 mb-4">
-                {product.description.substring(0, 100)}...
-              </p>
+            {product.content && stripHtmlTags(product.content).length > 100
+              ? stripHtmlTags(product.content).substring(0, 100) + "..."
+              : stripHtmlTags(product.content)}
+          </p>  
+
+
+
+           
               <Link
                 href={`/product/${product.slug}`}
                 className="inline-block bg-blue-500 text-white py-2 px-4 rounded-full hover:bg-blue-600 transition-colors duration-300"

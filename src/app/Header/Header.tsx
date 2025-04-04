@@ -42,7 +42,7 @@ export default function Header() {
     { name: "About", href: "/about" },
     {
       name: "Products",
-      href: "#",
+      href: "/product",
       submenu: [
         {
           name: "House Wire",

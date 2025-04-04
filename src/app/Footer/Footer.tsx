@@ -13,7 +13,7 @@ const Footer = () => {
         
         </div>
         <p className="text-sm">
-        s Cable, a leading cable manufacturing company, has been at the forefront of providing high-quality wiring solutions since its inception. With a commitment to innovation, reliability, and customer satisfaction, Accords Cable has become a trusted name in the industry.
+        Accords Cable, a leading cable manufacturing company, has been at the forefront of providing high-quality wiring solutions since its inception. With a commitment to innovation, reliability, and customer satisfaction, Accords Cable has become a trusted name in the industry.
         </p>
       </div>
 

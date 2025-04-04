@@ -1,66 +1,81 @@
 'use client'; // Mark this as a client-side component
 
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Image from 'next/image';
-
-// Define the product type
-interface Product {
-  id: number;
-  slug: string;
-  name: string;
-  productimage: string;
-  bottomimg: string;
-  description: string;
-}
+import { RootState, AppDispatch } from '../../../redux/store';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import { getProducts, getSingleProduct } from '@/redux/slices/ProductSlice';
+import Loader from '@/utils/Loader';
+import { GrLinkNext } from "react-icons/gr";
 
 export default function Page() {
   const pathname = usePathname();
-  const [product, setProduct] = useState<Product | null>(null);
+  const slug = pathname?.split('/').pop(); // Extract slug from the pathname
 
-  useEffect(() => {
-    if (pathname) {
-      const slug = pathname.split('/').pop(); // Extract the last part of the path
+  const dispatch = useAppDispatch();
 
-      const fetchData = async () => {
-        const res = await fetch('/products.json');
-        const data: Product[] = await res.json(); // Define the type of data here
-        const productData = data.find((item) => item.slug === slug); // Now TypeScript knows the type of 'item'
-        console.log(productData, 'data');
-        setProduct(productData || null); // Make sure to handle the case where productData might be undefined
-      };
-      fetchData();
-    }
-  }, [pathname]);
+  const { loading, error, singleProduct,products } = useAppSelector(
+    (state: RootState) => state.product
+  );
 
-  if (!product) {
-    return <div className="text-white">Loading...</div>;
+  function stripHtmlTags(input: string) {
+    return input
+      .replace(/<[^>]+>/g, '') // Removes HTML tags
+      .replace(/&nbsp;/g, ' ') // Replaces &nbsp; with a regular space
+      .replace(/&amp;/g, '&'); // Replaces &amp; with the actual '&' symbol
   }
 
+  useEffect(() => {
+    if (slug) {
+      dispatch(getSingleProduct({ slug }));
+    }
+    dispatch(getProducts());
+  }, [slug, dispatch]);
+
   return (
-    <div className="min-h-screen bg-black text-white py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto bg-gray-800 rounded-lg p-8 shadow-lg">
-        <h1 className="text-4xl font-bold mb-4">{product.name}</h1>
-        
-        {product.productimage && (
-          <Image
-            src={product.productimage}
-            alt={product.name}
-            width={500}
-            height={500}
-            className="w-full h-100 object-cover rounded-lg mb-6"
-          />
-        )}
-        
-        <p className="text-lg text-gray-400 pb-4">{product.description}</p>
-        
-        {product.bottomimg && (
-          <img
-            src={product.bottomimg}
-            alt="Bottom image"
-            className="w-full object-contain rounded-lg mb-6"
-          />
-        )}
+    <div className="max-w-7xl mx-auto px-6 py-20 sm:px-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="col-span-1 md:col-span-2">
+          {loading && <Loader />}
+          {error && <p>Error: {error}</p>}
+          {singleProduct && (
+            <div>
+              <h2 className="text-xl text-white font-semibold mb-4">{singleProduct.title}</h2>
+              {/* <Image
+                src={`/uploads/${singleProduct.image}`}
+                alt={singleProduct.title}
+                width={1000}
+                height={1000}
+                className="w-full h-64 object-cover rounded-lg mb-6"
+              /> */}
+              <Image
+                src={`/uploads/${singleProduct.image}`}
+                alt={singleProduct.title}
+                width={0} // Remove the width property
+                height={0} // Remove the height property
+                className="w-auto h-auto object-cover rounded-lg mb-6" // Allow the image to display in its original size
+                sizes="(max-width: 768px) 100vw, 50vw" // Optional: Helps with responsive resizing
+              />
+
+              <p className="text-gray-400 mb-4">
+                {singleProduct.content && stripHtmlTags(singleProduct.content)}
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* Right side content */}
+        <div className=" p-4 rounded-lg">
+          {
+           products && products.map((products)=>(
+            <a href={`/product/${products.slug}`} className='lg:float-right float-left' key={products._id}>
+            <p className='text-white flex gap-20 items-center'>{products.title} <GrLinkNext/></p>
+            </a>
+           ))
+          }
+          <p className="text-white text-center"></p>
+        </div>
       </div>
     </div>
   );
