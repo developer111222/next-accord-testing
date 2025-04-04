@@ -37,7 +37,7 @@ const Page = () => {
         title: singleProduct.title,
         content: singleProduct.content,
         image: null, // We'll use the image preview
-        fetchpreview: singleProduct.image, // Assuming product image is a URL
+        fetchpreview: singleProduct.image || null, // Assuming product image is a URL
       });
     }
   }, [singleProduct]);
