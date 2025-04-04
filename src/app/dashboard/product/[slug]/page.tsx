@@ -84,7 +84,7 @@ router.push('/dashboard/allproducts')
         image: null, // We'll use the image preview
         preview: singleProduct.image || null, // Assuming product image is a URL
         id: singleProduct._id, // Assuming product ID is in the response
-        slug: slug || '', // Add slug here
+        slug: singleProduct.slug || '', // Add slug here
       });
     }
   }, [singleProduct, slug]); // Add slug as a dependency
@@ -105,7 +105,7 @@ router.push('/dashboard/allproducts')
     e.preventDefault();
 
 
-dispatch(updateProduct({formData}))
+dispatch(updateProduct(formData))
   
   };
 
