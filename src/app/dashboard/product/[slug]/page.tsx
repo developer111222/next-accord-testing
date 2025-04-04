@@ -9,6 +9,15 @@ import Editor from '@/utils/JodEditor';
 import { useRouter } from "next/navigation";
 
 
+interface FormData {
+  title: string;
+  content: string;
+  image: File | null;
+  preview: string | null;
+  id: string;
+  slug: string; // Add slug field
+}
+
 const Page = () => {
   const pathname = usePathname();
   const slug = pathname?.split('/').pop(); // Extract slug from the pathname
@@ -21,13 +30,23 @@ const Page = () => {
   );
 
 
-  const [formData, setFormData] = useState({
+  // const [formData, setFormData] = useState({
+  //   title: "",
+  //   content: "",
+  //   image: null as File | null,
+  //   preview: null as string | null, // This will hold the preview image URL
+  //   id:''
+  // });
+
+  const [formData, setFormData] = useState<FormData>({
     title: "",
     content: "",
-    image: null as File | null,
-    preview: null as string | null, // This will hold the preview image URL
-    id:''
+    image: null,
+    preview: null,
+    id: '',
+    slug: '', // Initialize slug as an empty string
   });
+  
 
   useEffect(() => {
     if (slug) {
@@ -45,6 +64,18 @@ router.push('/dashboard/allproducts')
 }
   }, [slug, dispatch,error,isupdate]);
 
+  // useEffect(() => {
+  //   if (singleProduct) {
+  //     setFormData({
+  //       title: singleProduct.title,
+  //       content: singleProduct.content,
+  //       image: null, // We'll use the image preview
+  //       preview: singleProduct.image || null, // Assuming product image is a URL
+  //       id: singleProduct._id, // Assuming product ID is in the response
+  //     });
+  //   }
+  // }, [singleProduct]);
+
   useEffect(() => {
     if (singleProduct) {
       setFormData({
@@ -53,9 +84,11 @@ router.push('/dashboard/allproducts')
         image: null, // We'll use the image preview
         preview: singleProduct.image || null, // Assuming product image is a URL
         id: singleProduct._id, // Assuming product ID is in the response
+        slug: slug || '', // Add slug here
       });
     }
-  }, [singleProduct]);
+  }, [singleProduct, slug]); // Add slug as a dependency
+  
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -72,7 +105,7 @@ router.push('/dashboard/allproducts')
     e.preventDefault();
 
 
-dispatch(updateProduct(formData))
+dispatch(updateProduct({formData}))
   
   };
 
