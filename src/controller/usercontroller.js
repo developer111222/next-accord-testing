@@ -10,7 +10,7 @@ export async function createUser(body) {
         const { email, password, role } = body;
 
         if (!email || !password || !role) {
-            return Response.json({ msg: "Please provide email, password, and role" }, { status: 400 });
+            return Response.json({ msg: "Please provide email, password," }, { status: 400 });
         }
 
         const existUser = await User.findOne({ email });

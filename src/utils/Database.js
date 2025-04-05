@@ -1,9 +1,11 @@
 import mongoose from "mongoose";
 
+
 const  DBConnection = async () => {
     try {
+        console.log(process.env.DB)
         await mongoose.connect(
-            "mongodb+srv://jiyakhurana68:EJEYD0dONF5Fa7HP@cluster0.7qewb.mongodb.net/accordcable", {
+        process.env.DB ||'mongodb+srv://anishallindigi:hONiQLUxhej51Rrj@cluster0.zbefx.mongodb.net/accord-cable' , {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
                 bufferCommands: false,

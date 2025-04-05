@@ -20,13 +20,20 @@ export default function DashboardPage() {
   }, [dispatch]);
   return (
     <div>
-       {loading && <Loader />}
-       {error && <p>{error}</p>}
-       <div className='border-2 border-vlack w-100 h-60 p-10 rounded-lg' >
+      {loading && <Loader />}
+      {error && <p>{error}</p>}
+  {products?(
+      <div className='border-2 border-vlack w-100 h-60 p-10 rounded-lg' >
 <h2 className='lg:text-5xl text-center font-bold'>Products</h2>
 
 <p className='text-center lg:text-4xl my-10 p-5 rounded-full border-3'>{products.length}</p>
-       </div>
+      </div>
+  ):(
+    <div>
+    <p className=' text-center'>Product not found</p>
+    </div>
+  )}
+     
     </div>
   )
 }

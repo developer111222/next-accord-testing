@@ -30,6 +30,8 @@ export default function Page() {
   
 
   return (
+    <>
+    {products?(
     <div className="min-h-screen bg-black text-white py-8 px-4 sm:px-6 lg:px-8">
       {loading && <Loader />}
       {error && <p>Error: {error}</p>}
@@ -73,5 +75,11 @@ export default function Page() {
         ))}
       </div>
     </div>
+  ):(
+    <div>
+      <h1 className='text-white text-center'>Product not found</h1>
+    </div>
+  )};
+  </>
   );
 }
