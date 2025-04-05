@@ -14,7 +14,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   const links = [
     { label: "Dashboard", href: "/dashboard", icon: <IconBrandTabler className="h-5 w-5" /> },
-    { label: "Profile", href: "/dashboard/profile", icon: <IconUserBolt className="h-5 w-5" /> },
+    // { label: "Profile", href: "/dashboard/profile", icon: <IconUserBolt className="h-5 w-5" /> },
     { label: "Product", href: "/dashboard/product", icon: <FcShop className="h-5 w-5" /> },
     { label: "All Products", href: "/dashboard/allproducts", icon: <IconArrowLeft className="h-5 w-5" /> },
   ];

@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react';
-import { getProducts,deleteProduct } from '@/redux/slices/ProductSlice';
+import { getProducts,deleteProduct, resetState } from '@/redux/slices/ProductSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../../../redux/store';
 import { useAppDispatch,useAppSelector } from '@/redux/hooks';
@@ -12,7 +12,7 @@ import Loader from '@/utils/Loader';
 const Page = () => {
     const dispatch = useAppDispatch();
     // const router = useRouter();
-    const { loading, error, message, success, products } = useAppSelector(
+    const { loading, error, message, isdelete, products } = useAppSelector(
       (state: RootState) => state.product
     );
   
@@ -23,6 +23,11 @@ const Page = () => {
   const [productsPerPage] = useState(8);
 
   useEffect(() => {
+    if(isdelete){
+      alert(message)
+      dispatch(resetState())
+      redirect('/dashboard/allproduct')
+    }
     dispatch(getProducts()); // Dispatching the async action
   }, [dispatch]);
 

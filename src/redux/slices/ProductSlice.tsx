@@ -17,6 +17,7 @@ interface ProductState {
   error: string | null;
   message: string | null;
   success: boolean;
+  iscreate:boolean;
   isupdate: boolean;
   isdelete: boolean;
   singleProduct: Product | null; // Updated to allow null
@@ -32,6 +33,7 @@ const initialState: ProductState = {
   success: false,
   isupdate: false,
   isdelete: false,
+  iscreate: false,
 };
 
 // Create the reducer for the products slice
@@ -163,6 +165,7 @@ const ProductSlice = createSlice({
       state.success = false;
       state.isupdate = false;
       state.isdelete = false;
+      state.iscreate = false;
       state.singleProduct = null; // Reset singleProduct to null
     },
   },
@@ -171,10 +174,12 @@ const ProductSlice = createSlice({
       // Handle createProduct
       .addCase(createProduct.pending, (state) => {
         state.loading = true;
+       
       })
       .addCase(createProduct.fulfilled, (state, action: PayloadAction<Product & { message: string }>) => {
         state.loading = false;
         state.success = true;
+        state.iscreate = true;
         state.products.push(action.payload);  // Append to products array
         state.message = action.payload.message || "created successfully"; // Now 'message' exists in the payload
 
@@ -182,6 +187,7 @@ const ProductSlice = createSlice({
       .addCase(createProduct.rejected, (state, action) => {
         state.loading = false;
         state.success = false;
+        
         state.error = action.error.message || 'Error creating product';
 
       })

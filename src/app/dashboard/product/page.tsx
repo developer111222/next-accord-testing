@@ -9,10 +9,11 @@ import Loader from '../../../utils/Loader';
 
 export default function Product() {
   const dispatch = useAppDispatch()
-  const { loading, error, message, success, products } = useAppSelector(
+  const { loading, error, message, success,iscreate, products } = useAppSelector(
     (state: RootState) => state.product
   );
 
+  console.log(success)
   // Use one useState for all form fields (title, content, image, preview)
   const [formData, setFormData] = useState({
     title: '',
@@ -35,7 +36,7 @@ export default function Product() {
   };
 
   useEffect(()=>{
-    if(success){
+    if(iscreate){
       alert(message);
       setFormData({
         title: '',
@@ -43,16 +44,14 @@ export default function Product() {
         image: null,
         preview: null,
       });
-      dispatch(resetState());
+
     }
     if(error){
       alert(error);
       dispatch(resetState());
     }
-    if(loading){
-      <Loader />
-    }
-  },[error,success,loading])
+   
+  },[error,iscreate,loading])
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
