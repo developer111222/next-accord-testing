@@ -102,8 +102,7 @@ router.push('/dashboard/allblogs')
       metatitle:formData.metatitle,
       metadescription: formData.metadescription,
       metakeyword: formData.metakeyword,
- 
-      slug: formData.slug,
+       slug: formData.slug,
       title: formData.title,
       content: formData.content,
       image: formData.image as File, // make sure it's a File

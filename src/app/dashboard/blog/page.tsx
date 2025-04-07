@@ -24,6 +24,8 @@ export default function Product() {
     content: '',
     image: null as File | null,
     preview: null as string | null,
+    author:'',
+    slug:''
   });
 
 
@@ -50,6 +52,8 @@ export default function Product() {
         content: '',
         image: null,
         preview: null,
+        author:'',
+        slug:''
       });
 
     }
