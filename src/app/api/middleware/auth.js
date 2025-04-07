@@ -1,10 +1,11 @@
 import jwt from "jsonwebtoken";
 import User from "@/model/userschema";
+import DBConnection from '../../../utils/Database'
 
 // Function to authenticate user by verifying the JWT token
 export async function authenticate(req) {
     try {
-        // ✅ Get cookies from the request headers
+       await DBConnection();
         const cookieHeader = req.headers.get("cookie");
         if (!cookieHeader) return { status: 401, msg: "Unauthorized: No cookies found" };
 
@@ -32,7 +33,7 @@ export async function authenticate(req) {
 export function authorize(requiredRole) {
     return async (req) => {
         const auth = await authenticate(req);  // We need to wait for the result from `authenticate`
-        
+        await DBConnection()
         if (auth.status !== 200) {
             return { status: auth.status, msg: auth.msg }; // If authentication fails, return the error
         }
@@ -41,6 +42,7 @@ export function authorize(requiredRole) {
         if (auth.user.role !== requiredRole) {
             return { status: 403, msg: "Access Denied: Insufficient role" };
         }
+        
 
         return { status: 200, user: auth.user }; // Authorized user, proceed with request
     };

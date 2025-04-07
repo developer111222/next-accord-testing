@@ -27,7 +27,9 @@ export async function POST(req, res) {
         
         await ImageUpload(file)
         
-        const product = new Product({ title, content, image: file.name, slug: title.toLowerCase() });
+        const slug = title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '');
+
+        const product = new Product({ title, content, image: file.name, slug});
         await product.save();
 
         return NextResponse.json({ success: true, message: "Product created successfully" });
