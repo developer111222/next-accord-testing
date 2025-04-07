@@ -10,6 +10,16 @@ import { useRouter } from "next/navigation";
 import Image from 'next/image';
 import Head from 'next/head';
 
+
+interface Blog {
+    metatitle: string | null;
+    metadescription: string | null;
+    metakeyword: string | null;
+    metaTitle: string | null;
+    metaDescription: string | null;
+    image: string | null;
+    // other fields...
+}
 const Page = () => {
 
     const pathname = usePathname();
@@ -40,14 +50,15 @@ const Page = () => {
   
   return (
     <>
-    <Head>
-        <title>{singleBlog && singleBlog.metatitle}</title>
-        <meta name="description" content={singleBlog && singleBlog.metadescription} />
-        <meta name="keywords" content={singleBlog && singleBlog.metakeyword} />
-        <meta property="og:title" content={singleBlog && singleBlog.metaTitle} />
-        <meta property="og:description" content={singleBlog && singleBlog.metaDescription} />
-        <meta property="og:image" content={singleBlog && `/uploads/${singleBlog.image}`} />
-    </Head>
+   <Head>
+    <title>{singleBlog?.metatitle || 'Default Title'}</title>
+    <meta name="description" content={singleBlog?.metadescription || 'Default description'} />
+    <meta name="keywords" content={singleBlog?.metakeyword || 'default, keywords'} />
+    <meta property="og:title" content={singleBlog?.metatitle || 'Default OG Title'} />
+    <meta property="og:description" content={singleBlog?.metadescription || 'Default OG Description'} />
+    <meta property="og:image" content={singleBlog?.image ? `/uploads/${singleBlog.image}` : '/default-image.jpg'} />
+</Head>
+
     <div className="max-w-7xl mx-auto px-6 py-20 sm:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="col-span-1 md:col-span-2">
