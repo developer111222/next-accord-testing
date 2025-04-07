@@ -9,11 +9,12 @@ import DBConnection from '../../../../utils/Database';
 export const GET = async (req, { params }) => {
     try {
         const { slug } =  await params;
+     console.log(slug,"route slug")
         await DBConnection();
 
         const blog = await Blog.findOne({ slug });
         if (!blog) {
-            return NextResponse.status(404).json({ success: false, message: "Blog not found" });
+            return NextResponse.json({ success: false, message: "Blog not found" },);
         }
 
         return NextResponse.json({ success: true, blog })
@@ -61,7 +62,7 @@ export const PATCH=async(req,{params})=>{
         if (title) updateData.title = title;
         if (content) updateData.content = content;
         if (imageName) updateData.image = imageName;
-        updateData.slug = title ? title.toLowerCase() : null;
+        updateData.slug = title ? title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '') : null;
     
         const blog = await Blog.findByIdAndUpdate(slug, { $set: updateData }, { new: true });
         if (!blog) {

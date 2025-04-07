@@ -53,7 +53,7 @@ console.log(blogs)
 
   const handleEdit = (slug: string) => {
   
-    redirect(`/dashboard/product/${slug}`);
+    redirect(`/dashboard/blog/${slug}`)
   };
 
 const handleDelete=(slug:string)=>{
@@ -96,7 +96,7 @@ if(slug){
                   <td className="px-4 py-2 text-sm text-gray-700">{blog.slug}</td>
                   <td className="px-4 py-2 text-sm text-gray-700">
                     <button
-                    //   onClick={() => handleEdit(blog.slug)}
+                      onClick={() => handleEdit(blog.slug)}
                       className="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-700 mr-2"
                     >
                       Edit
