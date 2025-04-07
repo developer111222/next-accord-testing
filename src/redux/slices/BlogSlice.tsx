@@ -81,7 +81,8 @@ export const createBlog = createAsyncThunk<Blog & { message: string }, {
 export const getAllBlogs = createAsyncThunk<Blog[]>('blog/getAllBlogs', async () => {
   try {
     const response = await axios.get('/api/blog');
-    return response.data;
+    console.log(response.data)
+    return response.data.data;
   } catch (error: any) {
     const errorMessage = error?.response?.data?.message || 'Error fetching blog posts';
     throw new Error(errorMessage);

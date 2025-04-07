@@ -16,7 +16,7 @@ const Page = () => {
       (state: RootState) => state.blog
     );
   
-
+console.log(blogs)
 
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);

@@ -18,6 +18,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     { label: "Product", href: "/dashboard/product", icon: <FcShop className="h-5 w-5" /> },
     { label: "All Products", href: "/dashboard/allproducts", icon: <IconArrowLeft className="h-5 w-5" /> },
     { label: "Blog", href: "/dashboard/blog", icon: <IconArrowLeft className="h-5 w-5" /> },
+    { label: "All Blogs", href: "/dashboard/allblogs", icon: <IconArrowLeft className="h-5 w-5" /> },
   ];
 
   return (
