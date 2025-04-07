@@ -26,7 +26,7 @@ console.log(blogs)
     if(isdelete){
       alert(message)
       dispatch(resetState())
-      redirect('/dashboard/allproduct')
+      redirect('/dashboard/blog')
     }
     dispatch(getAllBlogs()); // Dispatching the async action
   }, [dispatch]);

@@ -45,7 +45,7 @@ console.log(loading,"loading")
     image: null,
     preview: null,
     id: '',
-    slug: '', // Initialize slug as an empty string
+    slug: '',   
   });
   
 
