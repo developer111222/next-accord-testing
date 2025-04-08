@@ -18,7 +18,7 @@ async function getSingleBlogBySlug(slug: string) {
 
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug } = params;
   const blog = await getSingleBlogBySlug(slug); // Use the same fetch here
   if (!blog) return { title: 'Not Found' };
 
@@ -44,7 +44,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
 export default async function Page({ params }: { params: { slug: string } }) {
 
-const { slug } = await params;
+const { slug } = params;
   const blog = await getSingleBlogBySlug(slug);
   if (!blog) return notFound();
 
