@@ -9,7 +9,7 @@ import DBConnection from '../../../../utils/Database';
 export const GET = async (req, { params }) => {
     try {
         const { slug } =  await params;
-     console.log(slug,"route slug")
+
         await DBConnection();
 
         const blog = await Blog.findOne({ slug });

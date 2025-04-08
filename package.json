@@ -17,6 +17,7 @@
     "bcryptjs": "^3.0.2",
     "clsx": "^2.1.1",
     "dompurify": "^3.2.5",
+    "isomorphic-dompurify": "^2.23.0",
     "jodit-react": "^5.2.18",
     "jsonwebtoken": "^9.0.2",
     "lightningcss": "^1.29.3",
