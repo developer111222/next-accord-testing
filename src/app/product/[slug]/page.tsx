@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { getProducts, getSingleProduct } from '@/redux/slices/ProductSlice';
 import Loader from '@/utils/Loader';
 import ProductSlug from '../productSlug/page';
-import DangerousHTML from 'react-dangerous-html';
+import DOMPurify from 'dompurify';
 
 export default function Page() {
   const pathname = usePathname();
@@ -55,10 +55,12 @@ export default function Page() {
                 sizes="(max-width: 768px) 100vw, 50vw" // Optional: Helps with responsive resizing
               />
 
-<div className="editor-data mb-4">
-              <DangerousHTML html={singleProduct.content} />
-             
-              </div>
+<div
+  className="editor-data mb-4 text-white"
+  dangerouslySetInnerHTML={{
+    __html: DOMPurify.sanitize(singleProduct.content || ''),
+  }}
+/>
             </div>
           )}
         </div>

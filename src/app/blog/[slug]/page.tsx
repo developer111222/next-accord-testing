@@ -9,8 +9,7 @@
   import { useRouter } from "next/navigation";
   import Image from 'next/image';
   import Head from 'next/head';
-  import DangerousHTML from 'react-dangerous-html';
-
+ import DOMPurify from 'dompurify'; 
 
 
   interface Blog {
@@ -82,10 +81,12 @@
                 className="w-auto h-auto object-cover rounded-lg mb-6" // Allow the image to display in its original size
                 sizes="(max-width: 768px) 100vw, 50vw" // Optional: Helps with responsive resizing
               />
-              <div className="editor-data mb-4">
-              <DangerousHTML html={singleBlog.content} />
-             
-              </div>
+            <div
+  className="editor-data mb-4 text-white"
+  dangerouslySetInnerHTML={{
+    __html: DOMPurify.sanitize(singleBlog.content || ''),
+  }}
+/>
             </div>
           )}
         </div>
