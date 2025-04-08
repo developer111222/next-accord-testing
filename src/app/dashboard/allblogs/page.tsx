@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react';
-import { getAllBlogs, resetState } from '@/redux/slices/BlogSlice';
+import { getAllBlogs,deleteBlog, resetState } from '@/redux/slices/BlogSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../../../redux/store';
 import { useAppDispatch,useAppSelector } from '@/redux/hooks';
@@ -59,7 +59,7 @@ console.log(blogs)
 const handleDelete=(slug:string)=>{
  
 if(slug){
-//   dispatch(deleteProduct({slug}))
+  dispatch(deleteBlog({slug}))
 }
 }
 
@@ -102,7 +102,7 @@ if(slug){
                       Edit
                     </button>
                     <button
-                    //   onClick={() => handleDelete(product._id)}
+                      onClick={() => handleDelete(blog._id)}
                       className="px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-700"
                     >
                       Delete
